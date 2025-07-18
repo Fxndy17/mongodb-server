@@ -23,7 +23,7 @@ COPY . .
 RUN npm install
 
 # Buka port aplikasi dan MongoDB
-EXPOSE 27017
+EXPOSE 3000 27017
 
 # Start MongoDB + Express bersamaan
 CMD mongod --fork --logpath /var/log/mongod.log && node app.js
