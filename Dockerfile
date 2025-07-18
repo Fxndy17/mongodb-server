@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM node:18
 
 # Noninteractive mode untuk install
 ENV DEBIAN_FRONTEND=noninteractive
@@ -26,4 +26,4 @@ RUN npm install
 EXPOSE 3000 27017
 
 # Start MongoDB + Express bersamaan
-CMD mongod --fork --logpath /var/log/mongod.log && node app.js
+CMD mongod --fork --logpath /var/log/mongod.log && node index.js
