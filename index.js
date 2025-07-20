@@ -24,7 +24,6 @@ mongoose.connect(mongoURI, {
   .then(() => console.log(`Connected to MongoDB at ${mongoIP}:${mongoPort}`))
   .catch(err => console.error('MongoDB connection error:', err));
 
-
 // Endpoint untuk cek koneksi
 app.get('/ping', (req, res) => {
   if (mongoose.connection.readyState === 1) {
