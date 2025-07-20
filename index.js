@@ -1,23 +1,29 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
+// Inisialisasi Express
 const app = express();
-const PORT = process.env.PORT || 3000;
-const MONGO_URI = process.env.MONGO_URI;
 
-const fs = require('fs');
-const path = require('path');
+// Middleware
+app.use(bodyParser.json());
 
-// Koneksi ke MongoDB
-mongoose.connect(MONGO_URI, {
+// Koneksi MongoDB dengan IP
+const mongoIP = process.env.MONGO_IP || 'localhost'; // Default localhost
+const mongoPort = process.env.MONGO_PORT || 27017; // Default port
+const dbName = process.env.DB_NAME || 'miaw';
+
+const mongoURI = `mongodb://${mongoIP}:${mongoPort}/${dbName}`;
+
+mongoose.connect(mongoURI, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => {
-  console.log('✅ MongoDB connected');
-}).catch(err => {
-  console.error('❌ MongoDB connection error:', err);
-});
+  useUnifiedTopology: true,
+  connectTimeoutMS: 5000
+})
+  .then(() => console.log(`Connected to MongoDB at ${mongoIP}:${mongoPort}`))
+  .catch(err => console.error('MongoDB connection error:', err));
+
 
 // Endpoint untuk cek koneksi
 app.get('/ping', (req, res) => {
@@ -54,6 +60,16 @@ app.get('/backup', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 MongoDB Server running at http://localhost:${PORT}`);
+// Basic route
+app.get('/', (req, res) => {
+  res.send(`
+    FUCK UR SELFFFF !!!
+  `);
+});
+
+// Start server
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+  console.log(`MongoDB connection: ${mongoURI}`);
 });
